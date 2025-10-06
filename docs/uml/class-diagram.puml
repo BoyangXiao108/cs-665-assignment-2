@@ -1,0 +1,68 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "edu.bu.met.cs665.delivery.interfaces" {
+  interface ISubject {
+    +attach(o: IObserver)
+    +detach(o: IObserver)
+    +notifyObservers(req: DeliveryRequest)
+  }
+
+  interface IObserver {
+    +update(req: DeliveryRequest)
+  }
+}
+
+package "edu.bu.met.cs665.delivery.model" {
+  class DeliveryRequest {
+    -id: String
+    -pickup: String
+    -dropoff: String
+    -itemDescription: String
+    -priority: int
+    +DeliveryRequest(pickup: String, dropoff: String, item: String, priority: int)
+    +getId(): String
+    +getPickup(): String
+    +getDropoff(): String
+    +getItemDescription(): String
+    +getPriority(): int
+  }
+
+  enum DriverType {
+    VAN
+    TAXI
+    SCOOTER
+  }
+
+  class Driver implements IObserver {
+    -name: String
+    -type: DriverType
+    -available: boolean
+    -inbox: List<DeliveryRequest>
+    +Driver(name: String, type: DriverType)
+    +isAvailable(): boolean
+    +setAvailable(b: boolean)
+    +getInbox(): List<DeliveryRequest>
+    +update(req: DeliveryRequest)
+  }
+
+  class Shop implements ISubject {
+    -name: String
+    -observers: List<IObserver>
+    +Shop(name: String)
+    +getName(): String
+    +attach(o: IObserver)
+    +detach(o: IObserver)
+    +notifyObservers(req: DeliveryRequest)
+    +createDeliveryRequest(pickup: String, dropoff: String, item: String, priority: int): DeliveryRequest
+    +getObservers(): List<IObserver>
+  }
+}
+
+ISubject <|.. Shop
+IObserver <|.. Driver
+Shop "1" o-- "*" IObserver : observers
+DeliveryRequest ..> Shop : used by
+DeliveryRequest ..> Driver : used by
+@enduml

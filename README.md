@@ -1,29 +1,52 @@
 
 | CS-665       | Software Design & Patterns |
 |--------------|----------------------------|
-| Name         | FIRST_NAME LAST_NAME       |
-| Date         | MM/DD/YYYY                 |
-| Course       | Fall / Spring / Summer     |
-| Assignment # |                            |
+| Name         | Boyang Xiao       |
+| Date         | 10/06/2025                 |
+| Course       | Fall      |
+| Assignment # | 2                           |
 
 # Assignment Overview
-Please add a paragraph or two overviewing the objectives of the assignment.
+The objective of this assignment is to design and implement a Delivery Notification System using a suitable design pattern in Java.  
+A collection of retailers collaborates with freelance drivers (vans, taxis, scooters) to deliver products to customers.  
+When a shop creates a delivery request, all available drivers must be notified.  
 
+This assignment demonstrates the **Observer Design Pattern**, where the **Shop** acts as the subject that notifies all registered **Driver** observers whenever a new **DeliveryRequest** is created.  
+The project focuses on applying core software design principles — flexibility, simplicity, and maintainability — while writing test-driven, clean, and modular code.
 # GitHub Repository Link:
-https://github.com/{YOUR_USERNAME}/cs-665-assignment-{ASSIGNMENT_NUMBER}
+https://github.com/Boyang_Xiao/cs-665-assignment-2
 
 # Implementation Description 
 
 
-For each assignment, please answer the following:
+### Flexibility
+The system is designed to be highly extensible.  
+New types of drivers or alternative notification channels can be easily added by implementing the `IObserver` interface without modifying the existing `Shop` class.  
+Similarly, future extensions — such as filtering drivers by vehicle type or availability — can be incorporated by enhancing the `Shop` logic or introducing new strategy classes, while the existing architecture remains unchanged.
 
-- Explain the level of flexibility in your implementation, including how new object types can
-be easily added or removed in the future.
-- Discuss the simplicity and understandability of your implementation, ensuring that it is
-easy for others to read and maintain.
-- Describe how you have avoided duplicated code and why it is important.
-- If applicable, mention any design patterns you have used and explain why they were
-chosen.
+### Simplicity and Understandability
+The codebase follows the **Single Responsibility Principle (SRP)**:  
+- `Shop` manages the list of observers and sends notifications.  
+- `Driver` only receives and records notifications.  
+- `DeliveryRequest` is an immutable value object that encapsulates order details.  
+
+Each class has a clear and distinct purpose, making the system easy to read, test, and maintain.  
+The code adheres to the **Google Java Style Guide**, with consistent naming and documentation for clarity.
+
+### Avoiding Duplicated Code
+Notification logic is centralized in the `Shop.notifyObservers()` method, preventing repetition of broadcast logic across the codebase.  
+All drivers share the same interface contract, eliminating redundant code for handling notifications.  
+Avoiding duplication ensures consistency and simplifies maintenance — any future change to the broadcast behavior requires modification in only one place.
+
+### Design Pattern Used
+This implementation applies the **Observer Pattern**:
+- **Subject (ISubject)** → `Shop`  
+- **Observers (IObserver)** → `Driver`  
+- **Event (DeliveryRequest)** → Notification payload  
+
+The Observer Pattern was chosen because it naturally supports the "one-to-many" notification model, allowing the system to dynamically add or remove observers (drivers) at runtime.
+
+---
 
 
 # Maven Commands
@@ -107,6 +130,16 @@ mvn checkstyle:checkstyle
 The HTML page will be found at the following location:
 `target/site/checkstyle.html`
 
+## UML Diagram
+The class diagram below illustrates the main components of the system and their relationships.
 
+ISubject <|.. Shop
+IObserver <|.. Driver
+Shop "1" o-- "*" IObserver : observers
+DeliveryRequest ..> Shop : used by
+DeliveryRequest ..> Driver : used by
+
+See the full UML diagram in:
+out/docs/uml/class-diagram.png
 
 
