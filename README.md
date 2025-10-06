@@ -14,7 +14,7 @@ When a shop creates a delivery request, all available drivers must be notified.
 This assignment demonstrates the **Observer Design Pattern**, where the **Shop** acts as the subject that notifies all registered **Driver** observers whenever a new **DeliveryRequest** is created.  
 The project focuses on applying core software design principles — flexibility, simplicity, and maintainability — while writing test-driven, clean, and modular code.
 # GitHub Repository Link:
-https://github.com/Boyang_Xiao/cs-665-assignment-2
+https://github.com/BoyangXiao108/cs-665-assignment-2
 
 # Implementation Description 
 
